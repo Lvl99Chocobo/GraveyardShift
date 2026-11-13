@@ -429,7 +429,7 @@ func start_wave() -> void:
 
 	if controls_hint.visible:
 		controls_hint.text = (
-			"Right-click an enemy to focus attacks.\n"
+			"Right-click an enemy to focus your attacks.\n"
 			+ "The thicker bar shows your target."
 		)
 	update_tutorial_appearance()
