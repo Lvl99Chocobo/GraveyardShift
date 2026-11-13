@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://y7203fq0f0cu"]
+
+[ext_resource type="Script" uid="uid://bcaujtue8eklq" path="res://hero.gd" id="1_780bu"]
+[ext_resource type="Texture2D" uid="uid://cubwr27nxo0b7" path="res://Assets/HaloWings.png" id="2_p1r5x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ogq8d"]
+size = Vector2(24, 24)
+
+[node name="Hero" type="Node2D" unique_id=1779258835]
+script = ExtResource("1_780bu")
+resurrection_effect_texture = ExtResource("2_p1r5x")
+
+[node name="Background" type="Polygon2D" parent="." unique_id=1180156735]
+position = Vector2(0, 18)
+scale = Vector2(1.25, 0.25)
+color = Color(0.6392157, 0.19607843, 0.24313726, 1)
+polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[node name="Body" type="Polygon2D" parent="." unique_id=2125617855]
+position = Vector2(0, 18)
+scale = Vector2(1.25, 0.25)
+color = Color(0.07058824, 0.23137255, 1, 1)
+polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[node name="ClickArea" type="Area2D" parent="." unique_id=1564850531]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ClickArea" unique_id=1892446945]
+shape = SubResource("RectangleShape2D_ogq8d")
+
+[node name="CharacterSprite" type="Sprite2D" parent="." unique_id=897901257]
+flip_h = true

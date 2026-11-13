@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://d3m6c4je48grl"]
+
+[ext_resource type="Script" uid="uid://doii0lspndpgb" path="res://enemy.gd" id="1_7k104"]
+[ext_resource type="Texture2D" uid="uid://du8vk5eygr2hy" path="res://Assets/skeletonIdle.png" id="2_4gyqm"]
+[ext_resource type="Texture2D" uid="uid://bijkw3v20u7n8" path="res://Assets/Pentagram.png" id="3_iifgy"]
+[ext_resource type="Texture2D" uid="uid://bv8xlpnll4qwt" path="res://Assets/Necromancer.png" id="3_qi2p4"]
+[ext_resource type="Texture2D" uid="uid://ckec2cgcsf8hr" path="res://Assets/skeletonDead.png" id="4_3yqyl"]
+[ext_resource type="Texture2D" uid="uid://c1rnp8api3wov" path="res://Assets/NecromancerDeath.png" id="5_wujgv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qi2p4"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.16078432, 0.105882354, 0.1254902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4gyqm"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.8509804, 0.29411766, 0.29411766, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ogq8d"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iifgy"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.14117648, 0.101960786, 0.20784314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_epg4t"]
+bg_color = Color(0.6509804, 0.42352942, 1, 1)
+
+[node name="Enemy" type="Node2D" unique_id=1352889661]
+script = ExtResource("1_7k104")
+ritual_texture = ExtResource("3_qi2p4")
+ritual_impact_texture = ExtResource("3_iifgy")
+skeleton_death_texture = ExtResource("4_3yqyl")
+necromancer_death_texture = ExtResource("5_wujgv")
+
+[node name="Body" type="Sprite2D" parent="." unique_id=1214187614]
+texture = ExtResource("2_4gyqm")
+
+[node name="AttackTimer" type="Timer" parent="." unique_id=1127716085]
+autostart = true
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1856439245]
+offset_left = -14.0
+offset_top = -22.0
+offset_right = 14.0
+offset_bottom = -18.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_qi2p4")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4gyqm")
+value = 100.0
+show_percentage = false
+
+[node name="CastLabel" type="Label" parent="." unique_id=62920221]
+visible = false
+offset_left = -70.0
+offset_top = -45.0
+offset_right = 70.0
+offset_bottom = -22.0
+text = "Preparing Ritual"
+horizontal_alignment = 1
+
+[node name="ClickArea" type="Area2D" parent="." unique_id=303267939]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ClickArea" unique_id=201461813]
+position = Vector2(0, 6)
+shape = SubResource("RectangleShape2D_ogq8d")
+
+[node name="RitualCastBar" type="ProgressBar" parent="." unique_id=1825286264]
+offset_left = -24.0
+offset_top = -26.0
+offset_right = 24.0
+offset_bottom = -22.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_iifgy")
+theme_override_styles/fill = SubResource("StyleBoxFlat_epg4t")
+max_value = 1.0
+show_percentage = false
