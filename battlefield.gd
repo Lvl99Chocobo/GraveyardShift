@@ -180,7 +180,11 @@ func update_hud() -> void:
 		+ "Uses per run: %d → %d (+1)"
 	) % [resurrection_cost, resurrection_level, resurrection_level + 1]
 
-	var show_resurrection: bool = resurrection_level > 0 and not game_over
+	var show_resurrection: bool = (
+		resurrection_level > 0
+		and not game_over
+		and tutorial_step == TutorialStep.OFF
+	)
 	resurrection_icon.visible = show_resurrection
 	resurrection_count.visible = show_resurrection
 	resurrection_icon.modulate.a = 1.0 if resurrection_remaining > 0 else 0.35
@@ -748,6 +752,7 @@ func update_tutorial_appearance() -> void:
 	graveyard.modulate = graveyard_color
 	if active:
 		graveyard.modulate = graveyard_color * Color(0.55, 0.55, 0.55, 1.0)
+	update_hud()
 
 func update_upgrade_tutorial() -> void:
 	var show_hint: bool = game_over and (
