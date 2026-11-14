@@ -17,7 +17,8 @@ var wave_delay_remaining: float = 0.0
 var wave_types: Array[String] = [
 	"Assault",
 	"Crossfire",
-	"Ritual"
+	"Ritual",
+	"Blood Drain"
 ]
 var resurrection_remaining: int = 0
 var next_hero_hit_sound_ms: int = 0
@@ -135,9 +136,9 @@ func update_hud() -> void:
 
 		button.tooltip_text = (
 			"%s Damage — %d gold\n\n"
-			+ "Improves this hero's damage per attack for your next run.\n\n"
+			+ "Improves the %s's damage per attack for your next run.\n\n"
 			+ "Damage per attack: %.0f → %.0f (+1)"
-		) % [dps_names[index], price, damage, damage + 1.0]
+		) % [dps_names[index], price, dps_names[index], damage, damage + 1.0]
 	
 	skill_tree_gold_label.text = "Gold: %d" % Progression.gold
 	
@@ -168,9 +169,9 @@ func update_hud() -> void:
 		button.disabled = not game_over or Progression.gold < price
 		button.tooltip_text = (
 			"%s Vitality — %d gold\n\n"
-			+ "Improves this hero's health for your next run.\n\n"
+			+ "Improves the %s's health for your next run.\n\n"
 			+ "Max HP: %.0f → %.0f (+%.0f)"
-		) % [dps_names[index], price, current_hp, current_hp + hp_gain, hp_gain]
+		) % [dps_names[index], price, dps_names[index], current_hp, current_hp + hp_gain, hp_gain]
 		
 	var resurrection_cost: int = Progression.get_resurrection_cost()
 	var resurrection_level: int = Progression.resurrection_level
@@ -469,6 +470,8 @@ func start_wave() -> void:
 		Vector2(320, 95),
 		Vector2(360, 105)
 	]
+	var vampire_slot: int = 0 if randf() < 0.5 else 2
+	var necromancer_slot: int = randi_range(0, spawn_positions.size() - 1)
 
 	for index in range(spawn_positions.size()):
 		var enemy = ENEMY_SCENE.instantiate()
@@ -478,37 +481,35 @@ func start_wave() -> void:
 		enemy.fallback_target = tank
 
 		var attacks_dps: bool = false
-		var is_ritual_wave: bool = current_wave_type == "Ritual"
+		enemy.target = tank
 
-		if is_ritual_wave:
-			enemy.target = tank
+		match current_wave_type:
+			"Ritual":
+				enemy.is_ritual = index == necromancer_slot
 
-			if index == 2:
-				enemy.is_ritual = true
+			"Blood Drain":
+				enemy.is_vampire = index == vampire_slot
+				if enemy.is_vampire:
+					enemy.target = $DPS1 if index == 0 else $DPS2
+					attacks_dps = true
 
-		elif current_wave_type == "Crossfire":
-			# Crossfire
-			if index == 0:
-				enemy.target = heroes[1]
-				attacks_dps = true
-			elif index == 2:
-				enemy.target = heroes[2]
-				attacks_dps = true
-			else:
-				enemy.target = tank
+			"Crossfire":
+				if index == 0:
+					enemy.target = $DPS1
+					attacks_dps = true
+				elif index == 2:
+					enemy.target = $DPS2
+					attacks_dps = true
 
-		else:
-			# Assault
-			if index == 2:
-				enemy.target = heroes[2]
-				attacks_dps = true
-			else:
-				enemy.target = tank
+			"Assault":
+				if index == 2:
+					enemy.target = $DPS2
+					attacks_dps = true
 
 		if enemy.is_ritual:
 			enemy.damage = wave_damage * 2.2
 			enemy.modulate = Color.WHITE
-		elif attacks_dps:
+		elif attacks_dps and not enemy.is_vampire:
 			enemy.damage = wave_damage * 0.6
 		else:
 			enemy.damage = wave_damage
@@ -593,7 +594,8 @@ func get_wave_type(number: int) -> String:
 		var next_types: Array[String] = [
 			"Assault",
 			"Crossfire",
-			"Ritual"
+			"Ritual",
+			"Blood Drain"
 		]
 
 		next_types.shuffle()

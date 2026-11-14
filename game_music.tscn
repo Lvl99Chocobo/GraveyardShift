@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://0ep1ytdkxvd5"]
+
+[ext_resource type="AudioStream" uid="uid://bcf76nxfc8lfk" path="res://Assets/DanseMacabre2 (1).mp3" id="1_1y0jw"]
+
+[node name="GameMusic" type="AudioStreamPlayer" unique_id=1243233934]
+process_mode = 3
+stream = ExtResource("1_1y0jw")
+volume_db = -20.0
+autoplay = true
+bus = &"Music"
+parameters/looping = true

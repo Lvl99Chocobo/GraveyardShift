@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Progression="*uid://dnt047wnmp366"
+GameMusic="*uid://0ep1ytdkxvd5"
 
 [display]
 

@@ -13,6 +13,9 @@ signal ritual_impacted
 @export var ritual_impact_texture: Texture2D
 @export var skeleton_death_texture: Texture2D
 @export var necromancer_death_texture: Texture2D
+@export var is_vampire: bool = false
+@export var vampire_texture: Texture2D
+@export var vampire_death_texture: Texture2D
 
 var is_casting: bool = false
 var health: float = 60.0
@@ -51,6 +54,8 @@ func _ready() -> void:
 	if is_ritual:
 		if ritual_texture != null:
 			body.texture = ritual_texture
+	if is_vampire and vampire_texture != null:
+		body.texture = vampire_texture
 
 		attack_timer.wait_time = 3.0
 		attack_timer.start()
@@ -111,7 +116,13 @@ func _on_attack_timer_timeout() -> void:
 		return
 
 	play_attack_animation()
+	var health_before: float = target.health
 	target.take_damage(damage)
+
+	if is_vampire:
+		var damage_dealt: float = maxf(health_before - target.health, 0.0)
+		health = minf(health + damage_dealt * 0.5, max_health)
+		health_bar.value = health
 
 	if is_enraged and not is_dead:
 		choose_next_target()
@@ -247,9 +258,12 @@ func stop_attacking() -> void:
 	ritual_cast_bar.hide()
 
 func show_death_sprite() -> void:
-	var death_texture: Texture2D = (
-		necromancer_death_texture if is_ritual else skeleton_death_texture
-	)
+	var death_texture: Texture2D = skeleton_death_texture
+
+	if is_vampire:
+		death_texture = vampire_death_texture
+	elif is_ritual:
+		death_texture = necromancer_death_texture
 
 	if death_texture == null:
 		queue_free()
