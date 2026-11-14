@@ -2,11 +2,15 @@
 
 [ext_resource type="Script" uid="uid://cyoec4erfdlt1" path="res://main_menu.gd" id="1_7vrkn"]
 [ext_resource type="PackedScene" uid="uid://urhvwc7txjbu" path="res://battlefield.tscn" id="2_fu7sn"]
+[ext_resource type="Texture2D" uid="uid://ctsodq3wg874b" path="res://Assets/MenuGraveyardBlurred.png" id="3_8qtwp"]
 [ext_resource type="Texture2D" uid="uid://duc21af6qm7qw" path="res://Assets/Hero.png" id="3_qe12f"]
 [ext_resource type="Texture2D" uid="uid://cakjtumaovvhf" path="res://Assets/Archer.png" id="4_8qtwp"]
 [ext_resource type="Texture2D" uid="uid://dhlvl4hq2s33t" path="res://Assets/Mage.png" id="5_dy7ct"]
 [ext_resource type="Texture2D" uid="uid://du8vk5eygr2hy" path="res://Assets/skeletonIdle.png" id="6_0o4t1"]
 [ext_resource type="Texture2D" uid="uid://bv8xlpnll4qwt" path="res://Assets/Necromancer.png" id="7_0k4wn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8qtwp"]
+bg_color = Color(0.11764706, 0.14901961, 0.12941177, 1)
 
 [node name="MainMenu" type="Control" unique_id=884376594]
 layout_mode = 3
@@ -15,6 +19,16 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_7vrkn")
 battlefield_scene = ExtResource("2_fu7sn")
+
+[node name="MenuBackground" type="TextureRect" parent="." unique_id=1655683523]
+texture_filter = 2
+layout_mode = 0
+offset_right = 640.0
+offset_bottom = 360.0
+mouse_filter = 2
+texture = ExtResource("3_8qtwp")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="MenuCharacters" type="Node2D" parent="." unique_id=449128881]
 
@@ -71,15 +85,82 @@ vertical_alignment = 1
 [node name="StartButton" type="Button" parent="." unique_id=1436697610]
 layout_mode = 0
 offset_left = 240.0
-offset_top = 170.0
+offset_top = 140.0
 offset_right = 400.0
-offset_bottom = 210.0
+offset_bottom = 180.0
 text = "Start Run"
 
 [node name="CheckpointButton" type="Button" parent="." unique_id=1139033588]
 layout_mode = 0
 offset_left = 240.0
-offset_top = 222.0
+offset_top = 190.0
 offset_right = 400.0
-offset_bottom = 262.0
+offset_bottom = 230.0
 text = "Start At Wave 5"
+
+[node name="OptionsButton" type="Button" parent="." unique_id=59271492]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 240.0
+offset_right = 400.0
+offset_bottom = 280.0
+text = "Options"
+
+[node name="OptionsPanel" type="Panel" parent="." unique_id=1106442673]
+visible = false
+layout_mode = 0
+offset_left = 160.0
+offset_top = 55.0
+offset_right = 480.0
+offset_bottom = 305.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8qtwp")
+
+[node name="TitleLabel" type="Label" parent="OptionsPanel" unique_id=2082250411]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 16.0
+offset_right = 296.0
+offset_bottom = 40.0
+text = "Options"
+
+[node name="MusicLabel" type="Label" parent="OptionsPanel" unique_id=2049140874]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 52.0
+offset_right = 296.0
+offset_bottom = 76.0
+text = "Music"
+
+[node name="MusicSlider" type="HSlider" parent="OptionsPanel" unique_id=235405395]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 80.0
+offset_right = 296.0
+offset_bottom = 104.0
+max_value = 1.0
+step = 0.01
+
+[node name="SFXLabel" type="Label" parent="OptionsPanel" unique_id=1708226897]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 116.0
+offset_right = 296.0
+offset_bottom = 140.0
+text = "Sound Effects"
+
+[node name="SFXSlider" type="HSlider" parent="OptionsPanel" unique_id=154025264]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 144.0
+offset_right = 296.0
+offset_bottom = 168.0
+max_value = 1.0
+step = 0.01
+
+[node name="BackButton" type="Button" parent="OptionsPanel" unique_id=613259089]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 192.0
+offset_right = 240.0
+offset_bottom = 228.0
+text = "Back"

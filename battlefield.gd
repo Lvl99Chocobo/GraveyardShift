@@ -25,7 +25,10 @@ enum TutorialStep { OFF, CLICK_HEAL, GROUP_HEAL, FOCUS_ENEMY }
 
 var tutorial_step: TutorialStep = TutorialStep.OFF
 var first_upgrade_bought_this_run: bool = false
+const AUDIO_SETTINGS_PATH: String = "user://audio_settings.cfg"
 
+@onready var music_slider: HSlider = $HUD/OptionsPanel/MusicSlider
+@onready var sfx_slider: HSlider = $HUD/OptionsPanel/SFXSlider
 @onready var upgrade_tutorial_panel: Panel = $HUD/UpgradeTutorialPanel
 @onready var upgrade_tutorial_hint: Label = $HUD/UpgradeTutorialPanel/Hint
 @onready var tutorial_target: Label = $TutorialTarget
@@ -224,6 +227,12 @@ func _ready() -> void:
 	resurrection_remaining = Progression.resurrection_level
 	tank_damage_upgrade_button.pressed.connect(_on_tank_damage_upgrade_pressed)
 	tank.attack_damage = base_tank_damage + Progression.get_tank_damage_bonus()
+	$HUD/OptionsButton.pressed.connect(_open_options)
+	$HUD/OptionsPanel/BackButton.pressed.connect(_close_options)
+
+	_load_audio_settings()
+	music_slider.value_changed.connect(_set_bus_volume.bind("Music"))
+	sfx_slider.value_changed.connect(_set_bus_volume.bind("Sound Effects"))
 	upgrade_tutorial_hint.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 	var dps_heroes: Array = [$DPS1, $DPS2]
@@ -270,6 +279,7 @@ func _on_hero_died() -> void:
 			return
 
 	game_over = true
+	$HUD/OptionsButton.hide()
 	update_tutorial_appearance()
 	# Laat de rest van je bestaande Game Over-code hier staan.
 	update_wave_status()
@@ -799,3 +809,41 @@ func on_upgrade_purchased() -> void:
 
 	update_hud()
 	update_upgrade_tutorial()
+
+func _set_bus_volume(value: float, bus_name: StringName) -> void:
+	var bus_index: int = AudioServer.get_bus_index(bus_name)
+	if bus_index == -1:
+		return
+
+	AudioServer.set_bus_mute(bus_index, value <= 0.0)
+	AudioServer.set_bus_volume_db(bus_index, linear_to_db(maxf(value, 0.001)))
+
+
+func _load_audio_settings() -> void:
+	var config := ConfigFile.new()
+	config.load(AUDIO_SETTINGS_PATH)
+
+	music_slider.value = float(config.get_value("audio", "music", 1.0))
+	sfx_slider.value = float(config.get_value("audio", "sfx", 1.0))
+
+	_set_bus_volume(music_slider.value, "Music")
+	_set_bus_volume(sfx_slider.value, "Sound Effects")
+	
+func _open_options() -> void:
+	if game_over:
+		return
+
+	$HUD/OptionsButton.hide()
+	$HUD/OptionsPanel.show()
+	get_tree().paused = true
+
+
+func _close_options() -> void:
+	var config := ConfigFile.new()
+	config.set_value("audio", "music", music_slider.value)
+	config.set_value("audio", "sfx", sfx_slider.value)
+	config.save(AUDIO_SETTINGS_PATH)
+
+	$HUD/OptionsPanel.hide()
+	$HUD/OptionsButton.show()
+	get_tree().paused = false
