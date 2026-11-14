@@ -75,6 +75,7 @@ const AUDIO_SETTINGS_PATH: String = "user://audio_settings.cfg"
 @onready var tutorial_panel: Panel = $HUD/TutorialPanel
 @onready var graveyard: Node2D = $Graveyard
 @onready var graveyard_color: Color = graveyard.modulate
+@onready var hero_death_sound: AudioStreamPlayer = $HeroDeathSound
 
 func update_heal_cooldown_visual() -> void:
 	var progress: float = 1.0 - (
@@ -274,9 +275,14 @@ func _on_hero_died() -> void:
 	if game_over:
 		return
 
+	if not hero_death_sound.playing:
+		hero_death_sound.play()
+
 	for hero in heroes:
 		if not hero.is_dead:
 			return
+
+	# Laat je bestaande Game Over-code vanaf hier staan.
 
 	game_over = true
 	$HUD/OptionsButton.hide()
@@ -300,8 +306,6 @@ func _on_hero_died() -> void:
 		"Start at Wave 5" if Progression.wave_5_unlocked else "Wave 5 (Locked)"
 	)
 	checkpoint_button.tooltip_text = "Clear Wave 4 to unlock."
-	game_over_panel.show()
-	update_upgrade_tutorial()
 	update_hud()
 
 	heal_cooldown_label.hide()
@@ -312,10 +316,13 @@ func _on_hero_died() -> void:
 	for hero in heroes:
 		hero.set_process(false)
 	
-
 	for enemy in enemies:
 		enemy.stop_attacking()
 
+	await get_tree().create_timer(1.0).timeout
+
+	game_over_panel.show()
+	update_upgrade_tutorial()
 
 func _on_restart_pressed(starting_wave: int = 1) -> void:
 	Progression.requested_start_wave = starting_wave
