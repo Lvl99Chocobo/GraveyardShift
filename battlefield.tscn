@@ -519,6 +519,16 @@ icon = ExtResource("16_vr0sn")
 flat = true
 icon_alignment = 1
 
+[node name="EnrageContinueButton" type="Button" parent="HUD" unique_id=870270326]
+process_mode = 2
+visible = false
+offset_left = 260.0
+offset_top = 76.0
+offset_right = 380.0
+offset_bottom = 104.0
+focus_mode = 0
+text = "Continue"
+
 [node name="HealSound" type="AudioStreamPlayer" parent="." unique_id=2101926953]
 stream = ExtResource("15_dq2i8")
 volume_db = -20.0

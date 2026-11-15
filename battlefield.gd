@@ -22,7 +22,7 @@ var wave_types: Array[String] = [
 ]
 var resurrection_remaining: int = 0
 var next_hero_hit_sound_ms: int = 0
-enum TutorialStep { OFF, CLICK_HEAL, GROUP_HEAL, FOCUS_ENEMY }
+enum TutorialStep { OFF, CLICK_HEAL, GROUP_HEAL, FOCUS_ENEMY, WAIT_FOR_ENRAGE, ENRAGE }
 
 var tutorial_step: TutorialStep = TutorialStep.OFF
 var first_upgrade_bought_this_run: bool = false
@@ -231,6 +231,7 @@ func _ready() -> void:
 	tank.attack_damage = base_tank_damage + Progression.get_tank_damage_bonus()
 	$HUD/OptionsButton.pressed.connect(_open_options)
 	$HUD/OptionsPanel/BackButton.pressed.connect(_close_options)
+	$HUD/EnrageContinueButton.pressed.connect(_on_enrage_continue_pressed)
 
 	_load_audio_settings()
 	music_slider.value_changed.connect(_set_bus_volume.bind("Music"))
@@ -546,6 +547,18 @@ func _on_enemy_died(enemy: Node2D) -> void:
 	enemies.erase(enemy)
 	if enemies.size() == 1 and not game_over:
 		enemies[0].enrage()
+		if wave_number == 1 and (
+			tutorial_step == TutorialStep.FOCUS_ENEMY
+			or tutorial_step == TutorialStep.WAIT_FOR_ENRAGE
+		):
+			tutorial_step = TutorialStep.ENRAGE
+			controls_hint.text = (
+				"The last enemy enrages and deals double damage.\n"
+				+ "It can strike any hero. Keep an eye on their healthbars!"
+			)
+			update_tutorial_appearance()
+			$HUD/EnrageContinueButton.show()
+			get_tree().paused = true
 
 	run_kills += 1
 	run_gold += 5
@@ -559,6 +572,9 @@ func _on_enemy_died(enemy: Node2D) -> void:
 	assign_targets(heroes[0].attack_target)
 
 	if enemies.is_empty() and not game_over:
+		if tutorial_step == TutorialStep.ENRAGE:
+			tutorial_step = TutorialStep.OFF
+			update_tutorial_appearance()
 		between_waves = true
 		wave_delay_remaining = 2.0
 		update_wave_status()
@@ -615,8 +631,8 @@ func _on_enemy_target_requested(enemy: Node2D) -> void:
 
 	assign_targets(enemy)
 	if tutorial_step == TutorialStep.FOCUS_ENEMY:
-		tutorial_step = TutorialStep.OFF
-	update_tutorial_appearance()
+		tutorial_step = TutorialStep.WAIT_FOR_ENRAGE
+		update_tutorial_appearance()
 
 func _on_main_menu_pressed() -> void:
 	get_tree().change_scene_to_file("res://main_menu.tscn")
@@ -763,7 +779,11 @@ func begin_tutorial() -> void:
 	tank.take_damage(20.0)
 	
 func update_tutorial_appearance() -> void:
-	var active: bool = tutorial_step != TutorialStep.OFF and not game_over
+	var active: bool = (
+		tutorial_step != TutorialStep.OFF
+		and tutorial_step != TutorialStep.WAIT_FOR_ENRAGE
+		and not game_over
+	)
 
 	tutorial_panel.visible = active
 	controls_hint.visible = active
@@ -855,4 +875,10 @@ func _close_options() -> void:
 
 	$HUD/OptionsPanel.hide()
 	$HUD/OptionsButton.show()
+	get_tree().paused = false
+
+func _on_enrage_continue_pressed() -> void:
+	$HUD/EnrageContinueButton.hide()
+	tutorial_step = TutorialStep.OFF
+	update_tutorial_appearance()
 	get_tree().paused = false

@@ -13,6 +13,8 @@ func _ready() -> void:
 	$CheckpointButton.visible = Progression.wave_5_unlocked
 	$OptionsButton.pressed.connect(_open_options)
 	$OptionsPanel/BackButton.pressed.connect(_close_options)
+	$CreditsButton.pressed.connect(_open_credits)
+	$CreditsPanel/BackButton.pressed.connect(_close_credits)
 
 	_load_audio_settings()
 	music_slider.value_changed.connect(_set_bus_volume.bind("Music"))
@@ -61,3 +63,13 @@ func _set_main_menu_visible(show_menu: bool) -> void:
 	$StartButton.visible = show_menu
 	$OptionsButton.visible = show_menu
 	$CheckpointButton.visible = show_menu and Progression.wave_5_unlocked
+	$CreditsButton.visible = show_menu
+
+func _open_credits() -> void:
+	_set_main_menu_visible(false)
+	$CreditsPanel.show()
+
+
+func _close_credits() -> void:
+	$CreditsPanel.hide()
+	_set_main_menu_visible(true)

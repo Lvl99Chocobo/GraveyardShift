@@ -54,10 +54,15 @@ func _ready() -> void:
 	if is_ritual:
 		if ritual_texture != null:
 			body.texture = ritual_texture
-	if is_vampire and vampire_texture != null:
-		body.texture = vampire_texture
 
 		attack_timer.wait_time = 3.0
+		attack_timer.start()
+
+	if is_vampire:
+		if vampire_texture != null:
+			body.texture = vampire_texture
+
+		attack_timer.wait_time = 2.0
 		attack_timer.start()
 		
 	$ClickArea.input_event.connect(_on_click_area_input_event)
@@ -121,8 +126,17 @@ func _on_attack_timer_timeout() -> void:
 
 	if is_vampire:
 		var damage_dealt: float = maxf(health_before - target.health, 0.0)
-		health = minf(health + damage_dealt * 0.5, max_health)
+		var previous_health: float = health
+		var healing: float = damage_dealt * 0.5
+		if is_enraged:
+			healing = minf(healing, 1.0)
+
+		health = minf(health + healing, max_health)
 		health_bar.value = health
+
+		var restored_hp: float = health - previous_health
+		if restored_hp > 0.0:
+			show_lifesteal_number(restored_hp)
 
 	if is_enraged and not is_dead:
 		choose_next_target()
@@ -284,3 +298,21 @@ func show_death_sprite() -> void:
 	fade.tween_interval(0.65)
 	fade.tween_property(body, "modulate:a", 0.0, 0.25)
 	fade.tween_callback(queue_free)
+
+func show_lifesteal_number(amount: float) -> void:
+	var label := Label.new()
+	label.text = "+" + String.num(amount, 1)
+	label.size = Vector2(56, 20)
+	label.position = Vector2(-28, -48)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.z_index = 6
+	label.add_theme_color_override("font_color", Color("#72FF8A"))
+	label.add_theme_color_override("font_outline_color", Color("#18251C"))
+	label.add_theme_constant_override("outline_size", 3)
+	add_child(label)
+
+	var tween := label.create_tween().set_parallel(true)
+	tween.tween_property(label, "position:y", -66.0, 0.6)
+	tween.tween_property(label, "modulate:a", 0.0, 0.6)
+	tween.chain().tween_callback(label.queue_free)
