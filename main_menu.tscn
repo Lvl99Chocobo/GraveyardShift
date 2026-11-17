@@ -87,7 +87,7 @@ text = "The Graveyard Shift"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="StartButton" type="Button" parent="." unique_id=1436697610]
+[node name="StartButton" type="Button" parent="." unique_id=1436697610 groups=["menu_click"]]
 layout_mode = 0
 offset_left = 240.0
 offset_top = 140.0
@@ -95,7 +95,7 @@ offset_right = 400.0
 offset_bottom = 180.0
 text = "Start Run"
 
-[node name="CheckpointButton" type="Button" parent="." unique_id=1139033588]
+[node name="CheckpointButton" type="Button" parent="." unique_id=1139033588 groups=["menu_click"]]
 layout_mode = 0
 offset_left = 240.0
 offset_top = 190.0
@@ -103,7 +103,7 @@ offset_right = 400.0
 offset_bottom = 230.0
 text = "Start At Wave 5"
 
-[node name="OptionsButton" type="Button" parent="." unique_id=59271492]
+[node name="OptionsButton" type="Button" parent="." unique_id=59271492 groups=["menu_click"]]
 layout_mode = 0
 offset_left = 240.0
 offset_top = 240.0
@@ -111,7 +111,7 @@ offset_right = 400.0
 offset_bottom = 280.0
 text = "Options"
 
-[node name="CreditsButton" type="Button" parent="." unique_id=94493705]
+[node name="CreditsButton" type="Button" parent="." unique_id=94493705 groups=["menu_click"]]
 layout_mode = 0
 offset_left = 240.0
 offset_top = 290.0
@@ -170,7 +170,7 @@ offset_bottom = 168.0
 max_value = 1.0
 step = 0.01
 
-[node name="BackButton" type="Button" parent="OptionsPanel" unique_id=613259089]
+[node name="BackButton" type="Button" parent="OptionsPanel" unique_id=613259089 groups=["menu_click"]]
 layout_mode = 0
 offset_left = 80.0
 offset_top = 192.0
@@ -210,7 +210,7 @@ Lvl99Chocobo
 "
 horizontal_alignment = 1
 
-[node name="BackButton" type="Button" parent="CreditsPanel" unique_id=1247462811]
+[node name="BackButton" type="Button" parent="CreditsPanel" unique_id=1247462811 groups=["menu_click"]]
 layout_mode = 0
 offset_left = 80.0
 offset_top = 192.0

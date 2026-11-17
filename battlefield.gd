@@ -77,6 +77,7 @@ const AUDIO_SETTINGS_PATH: String = "user://audio_settings.cfg"
 @onready var graveyard: Node2D = $Graveyard
 @onready var graveyard_color: Color = graveyard.modulate
 @onready var hero_death_sound: AudioStreamPlayer = $HeroDeathSound
+@onready var upgrade_purchase_sound: AudioStreamPlayer = $UpgradePurchaseSound
 
 func update_heal_cooldown_visual() -> void:
 	var progress: float = 1.0 - (
@@ -207,6 +208,9 @@ func update_hud() -> void:
 	) % [tank_damage_cost, current_tank_damage, current_tank_damage + 1.0]
 	
 func _ready() -> void:
+	for node in get_tree().get_nodes_in_group("menu_click"):
+		if node is BaseButton:
+			node.pressed.connect(MenuClickSound.play)
 	heal_upgrade_button.pressed.connect(_on_heal_upgrade_pressed)
 	restart_button.pressed.connect(_on_restart_pressed)
 	checkpoint_button.pressed.connect(_on_restart_pressed.bind(5))
@@ -831,6 +835,7 @@ func update_upgrade_tutorial() -> void:
 
 	
 func on_upgrade_purchased() -> void:
+	upgrade_purchase_sound.play()
 	if not Progression.upgrade_tutorial_completed:
 		Progression.upgrade_tutorial_completed = true
 		first_upgrade_bought_this_run = true

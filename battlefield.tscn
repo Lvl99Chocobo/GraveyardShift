@@ -23,6 +23,7 @@
 [ext_resource type="AudioStream" uid="uid://dojfkhd8ckqsj" path="res://Assets/Fireball.wav" id="19_dq2i8"]
 [ext_resource type="AudioStream" uid="uid://rjmsncpkqlcw" path="res://Assets/HealSound/RitualSound.wav" id="20_43gkx"]
 [ext_resource type="AudioStream" uid="uid://c0qtsk4wg5cu5" path="res://Assets/HealSound/GroupHeal.wav" id="21_43gkx"]
+[ext_resource type="AudioStream" uid="uid://be8fbyyjfxu6g" path="res://Assets/013_Confirm_03.wav" id="24_3f6fh"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vr0sn"]
 texture = ExtResource("4_43gkx")
@@ -197,7 +198,7 @@ offset_bottom = 38.0
 text = "Game Over!"
 horizontal_alignment = 1
 
-[node name="RestartButton" type="Button" parent="HUD/GameOverPanel" unique_id=191850815]
+[node name="RestartButton" type="Button" parent="HUD/GameOverPanel" unique_id=191850815 groups=["menu_click"]]
 layout_mode = 0
 offset_left = 40.0
 offset_top = 195.0
@@ -206,7 +207,7 @@ offset_bottom = 227.0
 focus_mode = 0
 text = "Start At Wave 1"
 
-[node name="CheckpointButton" type="Button" parent="HUD/GameOverPanel" unique_id=1477455648]
+[node name="CheckpointButton" type="Button" parent="HUD/GameOverPanel" unique_id=1477455648 groups=["menu_click"]]
 layout_mode = 0
 offset_left = 40.0
 offset_top = 235.0
@@ -224,7 +225,7 @@ text = "Wave Reached: 0
 Enemies Defeated: 0
 Gold Earned: 0"
 
-[node name="MainMenuButton" type="Button" parent="HUD/GameOverPanel" unique_id=319227825]
+[node name="MainMenuButton" type="Button" parent="HUD/GameOverPanel" unique_id=319227825 groups=["menu_click"]]
 layout_mode = 0
 offset_left = 40.0
 offset_top = 275.0
@@ -232,7 +233,7 @@ offset_right = 280.0
 offset_bottom = 307.0
 text = "Main Menu"
 
-[node name="SkillTreeButton" type="Button" parent="HUD/GameOverPanel" unique_id=736006006]
+[node name="SkillTreeButton" type="Button" parent="HUD/GameOverPanel" unique_id=736006006 groups=["menu_click"]]
 layout_mode = 0
 offset_left = 40.0
 offset_top = 155.0
@@ -396,7 +397,7 @@ icon = ExtResource("14_5w7dd")
 flat = true
 icon_alignment = 1
 
-[node name="BackButton" type="Button" parent="HUD/SkillTreePanel" unique_id=1480498553]
+[node name="BackButton" type="Button" parent="HUD/SkillTreePanel" unique_id=1480498553 groups=["menu_click"]]
 layout_mode = 0
 offset_left = 240.0
 offset_top = 273.0
@@ -499,7 +500,7 @@ offset_bottom = 168.0
 max_value = 1.0
 step = 0.01
 
-[node name="BackButton" type="Button" parent="HUD/OptionsPanel" unique_id=1025386231]
+[node name="BackButton" type="Button" parent="HUD/OptionsPanel" unique_id=1025386231 groups=["menu_click"]]
 layout_mode = 0
 offset_left = 80.0
 offset_top = 192.0
@@ -507,7 +508,7 @@ offset_right = 240.0
 offset_bottom = 228.0
 text = "Back"
 
-[node name="OptionsButton" type="Button" parent="HUD" unique_id=1753642671]
+[node name="OptionsButton" type="Button" parent="HUD" unique_id=1753642671 groups=["menu_click"]]
 texture_filter = 1
 offset_left = 11.0
 offset_top = 300.0
@@ -519,7 +520,7 @@ icon = ExtResource("16_vr0sn")
 flat = true
 icon_alignment = 1
 
-[node name="EnrageContinueButton" type="Button" parent="HUD" unique_id=870270326]
+[node name="EnrageContinueButton" type="Button" parent="HUD" unique_id=870270326 groups=["menu_click"]]
 process_mode = 2
 visible = false
 offset_left = 260.0
@@ -578,4 +579,9 @@ horizontal_alignment = 1
 [node name="HeroDeathSound" type="AudioStreamPlayer" parent="." unique_id=1337539108]
 stream = ExtResource("16_t7362")
 volume_db = -30.0
+bus = &"Sound Effects"
+
+[node name="UpgradePurchaseSound" type="AudioStreamPlayer" parent="." unique_id=1830677327]
+stream = ExtResource("24_3f6fh")
+volume_db = -15.0
 bus = &"Sound Effects"

@@ -7,6 +7,17 @@ const AUDIO_SETTINGS_PATH: String = "user://audio_settings.cfg"
 @onready var sfx_slider: HSlider = $OptionsPanel/SFXSlider
 
 func _ready() -> void:
+	var menu_buttons: Array[BaseButton] = [
+		$StartButton,
+		$CheckpointButton,
+		$OptionsButton,
+		$CreditsButton,
+		$OptionsPanel/BackButton,
+		$CreditsPanel/BackButton,
+	]
+
+	for button in menu_buttons:
+		button.pressed.connect(_play_menu_click)
 	$StartButton.pressed.connect(_on_start_pressed.bind(1))
 	$CheckpointButton.pressed.connect(_on_start_pressed.bind(5))
 
@@ -73,3 +84,6 @@ func _open_credits() -> void:
 func _close_credits() -> void:
 	$CreditsPanel.hide()
 	_set_main_menu_visible(true)
+
+func _play_menu_click() -> void:
+	MenuClickSound.play()

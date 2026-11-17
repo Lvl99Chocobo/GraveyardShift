@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Progression="*uid://dnt047wnmp366"
 GameMusic="*uid://0ep1ytdkxvd5"
+MenuClickSound="*uid://cu1veglj2ms0r"
 
 [display]
 
@@ -28,6 +29,10 @@ window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[global_group]
+
+menu_click=""
 
 [gui]
 

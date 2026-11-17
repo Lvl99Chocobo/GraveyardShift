@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cu1veglj2ms0r"]
+
+[ext_resource type="AudioStream" uid="uid://c7w3i8u14dkg1" path="res://Assets/click_001.ogg" id="1_tyduv"]
+
+[node name="MenuClickSound" type="AudioStreamPlayer" unique_id=1007640683 groups=["menu_click"]]
+process_mode = 3
+stream = ExtResource("1_tyduv")
+volume_db = -15.0
+bus = &"Sound Effects"
