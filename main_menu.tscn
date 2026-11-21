@@ -66,13 +66,13 @@ texture = ExtResource("6_0o4t1")
 
 [node name="Skeleton2" type="Sprite2D" parent="MenuCharacters" unique_id=994009776]
 texture_filter = 1
-position = Vector2(540, 130)
+position = Vector2(455, 210)
 scale = Vector2(4, 4)
 texture = ExtResource("7_0k4wn")
 
 [node name="Skeleton3" type="Sprite2D" parent="MenuCharacters" unique_id=1448771993]
 texture_filter = 1
-position = Vector2(445, 210)
+position = Vector2(540, 130)
 scale = Vector2(4, 4)
 texture = ExtResource("6_0o4t1")
 
